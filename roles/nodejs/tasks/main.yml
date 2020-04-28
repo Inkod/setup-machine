@@ -1,0 +1,17 @@
+---
+- name: Nodejs | Install Node Version Manager (nvm)
+  become: no
+  shell: >
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/{{ nvm_version }}/install.sh | {{ lookup('env','SHELL') }}
+  args:
+    executable: "{{ lookup('env','SHELL') }}"
+    creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
+
+- name: Nodejs | Install lts for node and npm
+  become: no
+  shell: >
+    . {{ ansible_env.HOME }}/.nvm/nvm.sh && nvm install node
+  args:
+    executable: "{{ lookup('env','SHELL') }}"
+    chdir: "{{ ansible_env.HOME }}"
+    creates: "{{ ansible_env.HOME }}/.nvm/versions/node"

@@ -4,6 +4,7 @@
   gather_facts: yes
   vars:
     ansible_user: inkod
+    nvm_version: v0.35.3
   roles:
     - common
     - ohmyzsh
@@ -11,4 +12,5 @@
     - vscode
     - discord
     - jetbrains-toolbox
+    - nodejs
     - clean
