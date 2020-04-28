@@ -1,0 +1,30 @@
+---
+- name: Firefox Developer Edition | Check for existing binary
+  become: no
+  find:
+    paths: /opt
+    patterns: 'firefox'
+    recurse: yes
+  register: firefox_installed
+
+- block:
+  - name: Firefox Developer Edition | Download .tar.gz
+    become: no
+    get_url:
+      url: https://download.mozilla.org/?product=firefox-devedition-latest-ssl&os=linux64&lang=en-US
+      dest: /tmp/firefox-dev.tar.gz
+
+  - name: Firefox Developer Edition | Extract .tar.gz
+    become: yes
+    unarchive:
+      src: /tmp/firefox-dev.tar.gz
+      dest: /opt
+      owner: "{{ ansible_user }}"
+      group: "{{ ansible_user }}"
+  when: firefox_installed.matched == 0
+
+- name: Firefox Developer Edition | Create firefox-dev.desktop from template
+  become: no
+  template:
+    src=firefox-dev.j2
+    dest=~/.local/share/applications/firefox-dev.desktop
