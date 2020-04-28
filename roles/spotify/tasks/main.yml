@@ -1,0 +1,19 @@
+---
+- name: Spotify | Add gpg key
+  become: yes
+  apt_key:
+    url: https://download.spotify.com/debian/pubkey.gpg
+    state: present
+
+- name: Spotify | Add repository
+  become: yes
+  apt_repository:
+    repo: 'deb http://repository.spotify.com stable non-free'
+    filename: spotify
+    state: present
+
+- name: Spotify | Install client
+  become: yes
+  apt:
+    name: spotify-client
+    update_cache: yes
