@@ -1,0 +1,11 @@
+---
+- name: Remove useless packages
+  become: yes
+  apt:
+    purge: yes
+    autoremove: yes
+
+- name: Remove useless packages from the cache
+  become: yes
+  apt:
+    autoclean: yes

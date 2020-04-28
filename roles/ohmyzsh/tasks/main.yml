@@ -1,0 +1,44 @@
+---
+- name: oh-my-zsh | Install needed packages
+  become: yes
+  apt:
+    state: present
+    pkg:
+      - git
+      - zsh
+  register: packages_install
+
+- name: oh-my-zsh | Check for existing install
+  become: no
+  stat:
+    path: '~/.oh-my-zsh'
+  register: ohmyzsh_install
+  when: packages_install is succeeded
+
+- block:
+  - name: oh-my-zsh | Backup existing ~/.zshrc
+    become: no
+    shell: if [ -f ~/.zshrc ]; then mv ~/.zshrc ~/.zshrc.orig; fi
+
+  - name: oh-my-zsh | Cloning repo
+    become: no
+    git:
+      repo=https://github.com/robbyrussell/oh-my-zsh
+      dest=~/.oh-my-zsh
+    register: ohmyzsh_cloning
+
+  - name: oh-my-zsh | Create new ~/.zshrc from template
+    become: no
+    template:
+      src=.zshrc.j2
+      dest=~/.zshrc
+    when: ohmyzsh_cloning is succeeded
+    register: ohmyzsh_config
+
+  - name: User | Change user shell to zsh
+    become: yes
+    user:
+      name: "{{ ansible_user }}"
+      shell: /usr/bin/zsh
+    when: ohmyzsh_config is succeeded
+  when: not ohmyzsh_install.stat.exists

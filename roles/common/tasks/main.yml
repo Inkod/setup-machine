@@ -1,0 +1,25 @@
+---
+- name: Upgrade packages
+  become: yes
+  apt:
+    update_cache: yes
+    upgrade: yes
+    cache_valid_time: 3600
+
+- name: Install packages
+  become: yes
+  apt:
+    cache_valid_time: 3600
+    state: present
+    pkg:
+      - git
+      - zsh
+      - terminator
+      - htop
+      - ssh
+      - fonts-powerline
+      - chromium-browser
+      - gdebi
+      - keepass2
+      - curl
+      - apt-transport-https

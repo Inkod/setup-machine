@@ -4,3 +4,7 @@
   gather_facts: yes
   vars:
     ansible_user: inkod
+  roles:
+    - common
+    - ohmyzsh
+    - clean
