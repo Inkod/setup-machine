@@ -1,0 +1,41 @@
+---
+- name: Jetbrains-toolbox | Check for existing binary
+  become: no
+  find:
+    paths: /opt
+    patterns: 'jetbrains-toolbox'
+    recurse: yes
+  register: toolbox_installed
+
+- block:
+  - name: Jetbrains-toolbox | Get download links
+    become: no
+    uri:
+      url: https://data.services.jetbrains.com/products/releases?platform=linux&code=TBA
+      return_content: yes
+      force: yes
+    register: releases
+
+  - name: Jetbrains-toolbox | Get checksum
+    become: no
+    uri:
+      url: "{{ releases.json.TBA[0].downloads.linux.checksumLink }}"
+      return_content: yes
+      force: yes
+    register: checksum
+
+  - name: Jetbrains-toolbox | Download .tar.gz
+    become: no
+    get_url:
+      url: "{{ releases.json.TBA[0].downloads.linux.link }}"
+      checksum: "sha256:{{ checksum.content | regex_search('.{0,64}') }}"
+      dest: /tmp/jetbrains-toolbox.tar.gz
+
+  - name: Jetbrains-toolbox | Extract .tar.gz
+    become: yes
+    unarchive:
+      src: /tmp/jetbrains-toolbox.tar.gz
+      dest: /opt
+      owner: "{{ ansible_user }}"
+      group: "{{ ansible_user }}"
+  when: toolbox_installed.matched == 0
