@@ -1,0 +1,13 @@
+---
+- name: Remove snapd | Purge snapd package
+  become: yes
+  apt:
+    name: snapd
+    state: absent
+    purge: yes
+
+- name: Remove snapd | Remove snap directory from home directory
+  become: yes
+  file:
+    path: "/home/{{ ansible_user }}/snap/"
+    state: absent
