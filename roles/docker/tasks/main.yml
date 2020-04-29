@@ -1,0 +1,69 @@
+---
+# Note: For the momoment, an official docker repository is not available for ubuntu focal.
+#       Instead, I use temporary ubuntu repository
+
+- name: Docker | Install packages (from ubuntu repository)
+  become: yes
+  apt:
+    cache_valid_time: 3600
+    state: present
+    pkg:
+      - docker.io
+
+# Uncomment this lines when official docker repository will be available for ubuntu focal.
+#
+# - name: Docker | Install required packages
+#   become: yes
+#   apt:
+#     cache_valid_time: 3600
+#     state: present
+#     pkg:
+#       - curl
+#       - apt-transport-https
+#       - ca-certificates
+#       - gnupg-agent
+#       - software-properties-common
+
+# - name: Docker | Add gpg key
+#   become: yes
+#   apt_key:
+#     url: https://download.docker.com/linux/ubuntu/gpg
+#     id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+#     state: present
+
+# - name: Docker | Add repository
+#   become: yes
+#   apt_repository:
+#     repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+#     state: present
+#     update_cache: yes
+
+# - name: Docker | Install packages
+#   become: yes
+#   apt:
+#     state: present
+#     pkg:
+#       - docker-ce
+#       - docker-ce-cli
+#       - containerd.io
+
+- name: Docker | Add the docker group to the user
+  become: yes
+  user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: yes
+
+- name: Docker | Check that docker is running
+  become: yes
+  service:
+    name: docker
+    enabled: yes
+    state: started
+
+- name: Docker | Install Docker Compose
+  become: yes
+  get_url:
+    url: https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64
+    dest: "/usr/local/bin/docker-compose"
+    mode: 0755

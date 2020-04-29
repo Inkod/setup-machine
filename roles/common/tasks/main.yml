@@ -23,3 +23,6 @@
       - keepass2
       - curl
       - apt-transport-https
+      - ca-certificates
+      - gnupg-agent
+      - software-properties-common
