@@ -17,4 +17,5 @@
     - nodejs
     - firefox-dev
     - docker
+    - deno
     - clean

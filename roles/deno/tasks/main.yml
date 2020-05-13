@@ -1,0 +1,7 @@
+---
+- name: Deno | Install deno
+  become: no
+  shell: >
+    curl -fsSL https://deno.land/x/install/install.sh | sh
+  args:
+    creates: "{{ ansible_env.HOME }}/.deno/bin/deno"
