@@ -18,7 +18,7 @@
       - htop
       - ssh
       - fonts-powerline
-      - chromium-browser
+#      - chromium-browser # FIXME: reinstall snap pacckage to install chromium-browser with it
       - gdebi
       - keepass2
       - curl
