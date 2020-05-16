@@ -13,3 +13,7 @@ export NVM_DIR="$HOME/.nvm"
 
 export DENO_INSTALL="/home/inkod/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
+
+if [ -d "/opt/adb-fastboot/platform-tools" ] ; then
+ export PATH="/opt/adb-fastboot/platform-tools:$PATH"
+fi

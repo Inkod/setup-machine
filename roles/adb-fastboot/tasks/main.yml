@@ -1,0 +1,19 @@
+---
+- name: adb-fastboot | Create a "/opt/adb-fastboot" directory if it does not exist
+  become: yes
+  file:
+    path: /opt/adb-fastboot
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0755'
+
+- name: adb-fastboot | Download and unzip tools
+  become: yes
+  unarchive:
+    src: https://dl.google.com/android/repository/platform-tools-latest-linux.zip
+    dest: /opt/adb-fastboot
+    remote_src: yes
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    creates: /opt/adb-fastboot/platform-tools
