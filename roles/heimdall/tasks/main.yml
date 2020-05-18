@@ -1,0 +1,34 @@
+---
+- name: Heimdall | Create a "/opt/heimdall" directory if it does not exist
+  become: yes
+  file:
+    path: /opt/heimdall
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0755'
+
+- name: Heimdall | Check for existing binary
+  become: no
+  find:
+    paths: /opt/heimdall
+    patterns: 'heimdall'
+    recurse: yes
+  register: heimdall_installed
+
+- block:
+  - name: Heimdall | Download .zip
+    become: no
+    get_url:
+      url: https://images.ecloud.global/tools/heimdall/heimdall_ubuntu.zip
+      checksum: sha256:https://images.ecloud.global/tools/heimdall/heimdall_ubuntu.zip.sha256sum
+      dest: /tmp/heimdall_ubuntu.zip
+
+  - name: Heimdall | Extract .zip
+    become: yes
+    unarchive:
+      src: /tmp/heimdall_ubuntu.zip
+      dest: /opt/heimdall
+      owner: "{{ ansible_user }}"
+      group: "{{ ansible_user }}"
+  when: heimdall_installed.matched == 0
