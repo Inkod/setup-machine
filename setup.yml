@@ -21,4 +21,5 @@
     - adb-fastboot
     - heimdall
     - symfony-cli
+    - php
     - clean

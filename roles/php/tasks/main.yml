@@ -1,0 +1,56 @@
+---
+- name: PHP | Add repository
+  become: yes
+  apt_repository:
+    repo: ppa:ondrej/php
+    filename: php
+    state: present
+
+- name: PHP | Install php 7.4 packages
+  become: yes
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+    state: present
+    pkg:
+      - php7.4-cli
+      - php7.4-opcache
+      - php7.4-common
+      - php7.4-amqp
+      - php7.4-curl
+      - php7.4-fpm
+      - php7.4-intl
+      - php7.4-json
+      - php7.4-mbstring
+      - php7.4-pgsql
+      - php7.4-mysql
+      - php7.4-redis
+      - php7.4-readline
+      - php7.4-sqlite3
+      - php7.4-xml
+      - php7.4-xdebug
+      - php7.4-zip
+
+- name: PHP | Write /etc/php/{{ item }}/conf.d/99-custom.ini file
+  become: yes
+  copy:
+    dest: /etc/php/{{ item }}/conf.d/99-custom.ini
+    content: |
+      [PHP]
+      error_reporting = E_ALL
+      display_errors = On
+      display_startup_errors = On
+      log_errors = Off
+      #log_errors_max_len = 1024
+      report_memleaks = On
+      default_charset = "UTF-8"
+      #auto_prepend_file = ${HOME}/.composer/vendor/autoload.php
+      [Date]
+      date.timezone = Europe/Paris
+  with_items:
+    - 7.4/cli
+    - 7.4/fpm
+
+- name: PHP | Disable xdebug
+  become: yes
+  shell: phpdismod xdebug
