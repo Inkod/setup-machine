@@ -20,4 +20,5 @@
     - deno
     - adb-fastboot
     - heimdall
+    - symfony-cli
     - clean

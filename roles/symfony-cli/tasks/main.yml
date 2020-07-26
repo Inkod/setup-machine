@@ -1,0 +1,7 @@
+---
+- name: Symfony-cli | Install
+  become: no
+  shell: >
+    wget https://get.symfony.com/cli/installer -O - | bash
+  args:
+    creates: "{{ ansible_env.HOME }}/.symfony/bin/symfony"

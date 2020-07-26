@@ -21,3 +21,7 @@ fi
 if [ -d "/opt/heimdall/bin" ] ; then
  export PATH="/opt/heimdall/bin:$PATH"
 fi
+
+if [ -d "${HOME}/.symfony/bin" ] ; then
+ export PATH="${PATH}:${HOME}/.symfony/bin"
+fi
