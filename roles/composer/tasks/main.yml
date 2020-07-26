@@ -1,0 +1,27 @@
+---
+- name: Composer | Install
+  become: yes
+  script: roles/composer/files/composer_install.sh
+  args:
+    creates: /usr/local/bin/composer
+
+- name: Composer | Move globally
+  become: yes
+  shell: mv composer.phar /usr/local/bin/composer
+  args:
+    creates: /usr/local/bin/composer
+
+- name: Composer | Set permissions
+  become: yes
+  file:
+    path: /usr/local/bin/composer
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "a+x"
+
+- name: Composer | Make sure composer is at its latest version
+  composer:
+    global_command: yes
+    command: self-update
+  register: composer_self_update
+  changed_when: "'You are already using composer version' not in composer_self_update.stdout"

@@ -22,4 +22,5 @@
     - heimdall
     - symfony-cli
     - php
+    - composer
     - clean
