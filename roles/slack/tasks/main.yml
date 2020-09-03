@@ -1,0 +1,10 @@
+---
+- name: Slack | Gather the package facts
+  package_facts:
+    manager: "auto"
+
+- name: Slack | Install client from .deb
+  become: yes
+  apt:
+    deb: https://downloads.slack-edge.com/linux_releases/slack-desktop-{{ slack_version }}-amd64.deb
+  when: "'slack-desktop' not in ansible_facts.packages"

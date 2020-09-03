@@ -6,6 +6,7 @@
     ansible_user: inkod
     nvm_version: v0.35.3
     docker_compose_version: 1.25.5
+    slack_version: 4.8.0
   roles:
     - remove-snapd
     - common
@@ -23,4 +24,5 @@
     - symfony-cli
     - php
     - composer
+    - slack
     - clean
