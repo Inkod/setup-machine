@@ -1,4 +1,13 @@
 ---
+- name: Firefox Developer Edit | Prepare/Fix directory with right permissions
+  become: yes
+  file:
+    path: /opt/firefox
+    state: directory
+    mode: 0755
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
 - name: Firefox Developer Edition | Check for existing binary
   become: no
   find:
@@ -11,7 +20,7 @@
   - name: Firefox Developer Edition | Download .tar.gz
     become: no
     get_url:
-      url: https://download.mozilla.org/?product=firefox-devedition-latest-ssl&os=linux64&lang=en-US
+      url: https://download.mozilla.org/?product=firefox-devedition-latest-ssl&os=linux64&lang=fr
       dest: /tmp/firefox-dev.tar.gz
 
   - name: Firefox Developer Edition | Extract .tar.gz
