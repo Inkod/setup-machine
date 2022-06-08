@@ -5,8 +5,9 @@
     repo: ppa:ondrej/php
     filename: php
     state: present
+    codename: focal
 
-- name: PHP | Install php 7.4 packages
+- name: PHP | Install php packages
   become: yes
   apt:
     update_cache: yes
@@ -30,6 +31,38 @@
       - php7.4-xml
       - php7.4-xdebug
       - php7.4-zip
+      - php8.0-cli
+      - php8.0-opcache
+      - php8.0-common
+      - php8.0-amqp
+      - php8.0-curl
+      - php8.0-fpm
+      - php8.0-intl
+      - php8.0-mbstring
+      - php8.0-pgsql
+      - php8.0-mysql
+      - php8.0-redis
+      - php8.0-readline
+      - php8.0-sqlite3
+      - php8.0-xml
+      - php8.0-xdebug
+      - php8.0-zip
+      - php8.1-cli
+      - php8.1-opcache
+      - php8.1-common
+      - php8.1-amqp
+      - php8.1-curl
+      - php8.1-fpm
+      - php8.1-intl
+      - php8.1-mbstring
+      - php8.1-pgsql
+      - php8.1-mysql
+      - php8.1-redis
+      - php8.1-readline
+      - php8.1-sqlite3
+      - php8.1-xml
+      - php8.1-xdebug
+      - php8.1-zip
 
 - name: PHP | Write /etc/php/{{ item }}/conf.d/99-custom.ini file
   become: yes
@@ -50,6 +83,16 @@
   with_items:
     - 7.4/cli
     - 7.4/fpm
+    - 8.0/cli
+    - 8.0/fpm
+    - 8.1/cli
+    - 8.1/fpm
+
+- name: PHP | Configure the default version
+  become: yes
+  alternatives:
+    name: php
+    path: /usr/bin/php8.1
 
 - name: PHP | Disable xdebug
   become: yes
